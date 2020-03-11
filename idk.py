@@ -44,37 +44,9 @@ env.render()
 def mean_reward(rewards):
 	return (r[0] for r in rewards) / sun(r[0] + r[1] for r in rewards)
 
-# print("My Agent vs Random Agent:", mean_reward(evaluate("connect x", [my_agent, "random"], num_episodes=10)))
-# print("My Agent vs Negmax Agent:", mean_reward(evaluate("connect x", [my_agent, "negamax"], num_episodes=10)))
+print("My Agent vs Random Agent:", mean_reward(evaluate("connect x", [my_agent, "random"], num_episodes=10)))
+print("My Agent vs Negmax Agent:", mean_reward(evaluate("connect x", [my_agent, "negamax"], num_episodes=10)))
 
 # Play your agent
 env.play([my_agent, None], width=500, height=450)
 
-import inspect
-import os
-
-def write_agent_to_file(function, file):
-    with open(file, "a" if os.path.exists(file) else "w") as f:
-        f.write(inspect.getsource(function))
-        print(function, "written to", file)
-
-write_agent_to_file(my_agent, "submission.py")
-
-import sys
-out = sys.stdout
-submission = utils.read_file("/kaggle/working/submission.py")
-agent = utils.get_last_callable(submission)
-sys.stdout = out
-
-env = make("connectx", debug=True)
-env.run([agent, agent])
-print("Success!" if env.state[0].status == env.state[1].status == "DONE" else "Failed...")
-
-
-
-def my_agent(observation, configuration):
-	from random import choice
-	return choice([c for c in range(configuration.columns) if observation.board[c] == 0])
-def my_agent(observation, configuration):
-	from random import choice
-	return choice([c for c in range(configuration.columns) if observation.board[c] == 0])
