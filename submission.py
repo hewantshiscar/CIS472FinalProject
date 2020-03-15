@@ -1,9 +1,12 @@
+
 def my_agent(observation, configuration):
-	from random import choice
-	return choice([c for c in range(configuration.columns) if observation.board[c] == 0])
-def my_agent(observation, configuration):
-	from random import choice
-	return choice([c for c in range(configuration.columns) if observation.board[c] == 0])
-def my_agent(observation, configuration):
-	from random import choice
-	return choice([c for c in range(configuration.columns) if observation.board[c] == 0])
+	import ok
+	choice = 0
+	for i in range(configuration.columns):
+		if observation.board[i] == 0:
+			y = []
+			y.append(i)
+			if ok.test_agent_1(observation['board'], y):
+				choice = i
+				break
+	return choice

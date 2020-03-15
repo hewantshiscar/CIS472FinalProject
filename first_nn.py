@@ -44,37 +44,32 @@ def train_nn(D, n, K, MaxIter):
 	# Two layer network train
 
 	W = np.array(np.multiply([0.2], D[0]))
-	v = np.array(np.multiply([0.2], D[0]))
+	v = np.array(np.multiply([0.2], K))
 	a = np.array(np.multiply([0], K))
 	h = np.array(np.multiply([0], K))
 	x2 = np.array(np.multiply([0], K))
+
 	for i in range(MaxIter):
 		G = np.array(np.multiply(np.array(np.multiply([0], K)), np.size(D)))
-		g = np.array(np.multiply([0], D[0]))
+		g = np.array(np.multiply([0], K))
 		count = 0
 
 		np.seterr(divide='ignore', invalid='ignore')
 		for j in range(len(D[0])):
-			x2[j] = np.divide(np.multiply(W[j], D[j]), np.multiply(np.dot(W[j], D[j]), D[j]))
-		print(len(x2))
-		# x2[np.isnan(x2)] = 0
-		# print(len(W))
-		# for j in range(len(x2)):
-		# 	a[j] = np.dot(W, x2[j])
-		# print("LA", len(a))
-		# 	h = np.tanh(a)
-		# 	print(np.multiply(v, h))
-		# 	y2[count] = np.multiply(v, h)
-		# 	count += 1
-		# e = np.subtract(K, y2)
-		# print("E:", len(e))
-		# print("H:", len(h))
-		# print("g:", len(g))
-			# g = np.subtract(g, np.multiply(e, h))
+			x2 = np.multiply(np.divide(np.dot(W, D[j]), np.dot(W, D[j])), D)
+			x2[np.isnan(x2)] = 0
+			a[j] = np.dot(W, x2[j])
+		h = np.tanh(a)
+		y2 = np.multiply(v, h)
+		e = np.subtract(K, y2)
+		g = np.subtract(g, np.multiply(e, h))
 
-			# 	for j in range(np.size(K)):
-			# 		G[i] = np.subtract(g[i], np.multiply(e, np.multiply(np.multiply(v[i],
-			# 			np.subtract(1, np.square(np.tanh(a[i])))), x[i])))
+		for j in range(len(K)):
+			print(np.multiply(v[j],
+				np.subtract(1, np.square(np.tanh(a[j])))))
+			print(G[j])
+			G[j] = np.subtract(G[j], np.multiply(e[j], np.multiply(np.multiply(v[j],
+				np.subtract(1, np.square(np.tanh(a[j])))), D[j])))
 		# W = np.subtract(W, np.multiply(n, G))
 		# v = np.subtract(v, np.multiply(n, g))
 		print(MaxIter - i)
