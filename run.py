@@ -77,6 +77,11 @@ def write_agent_to_file(function, file):
         f.write(inspect.getsource(function))
         print(function, "written to", file)
 
+
+
+def mean_reward(rewards):
+    return sum(r[0] for r in rewards) / sum(r[0] + r[1] for r in rewards)
+
 write_agent_to_file(my_agent, "submission.py")
 
 out = sys.stdout
@@ -85,5 +90,7 @@ agent = utils.get_last_callable(submission)
 sys.stdout = out
 
 env = make("connectx", debug=True)
-env.run([agent, agent])
+# Run multiple episodes to estimate its performance.
+print("My Agent vs Random Agent:", mean_reward(evaluate("connectx", [agent, "random"], num_episodes=10)))
+print("My Agent vs Negamax Agent:", mean_reward(evaluate("connectx", [agent, "negamax"], num_episodes=10)))
 print("Success!" if env.state[0].status == env.state[1].status == "DONE" else "Failed...")
