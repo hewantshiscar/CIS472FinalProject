@@ -9,6 +9,7 @@ Authors: Mikayla Campbell, James Kang, Olivia Pannell
 # Create ConnectX environment
 import re
 import os
+import time
 import ok
 import sys
 import inspect
@@ -20,6 +21,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from kaggle_environments import evaluate, make, utils
 from sklearn.metrics import classification_report,confusion_matrix
+
+start_time = time.time()
 
 env = make("connectx", debug=True)
 env.render()
@@ -93,4 +96,5 @@ env = make("connectx", debug=True)
 # Run multiple episodes to estimate its performance.
 print("My Agent vs Random Agent:", mean_reward(evaluate("connectx", [agent, "random"], num_episodes=10)))
 print("My Agent vs Negamax Agent:", mean_reward(evaluate("connectx", [agent, "negamax"], num_episodes=10)))
+print("My program took", time.time() - start_time, "to run")
 print("Success!" if env.state[0].status == env.state[1].status == "DONE" else "Failed...")
